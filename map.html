@@ -1,0 +1,558 @@
+﻿<!doctype html>
+<html>
+<head>
+	<title> Air Quality Map </title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!-- leaflet stylesheet -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css"
+		  integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+		  crossorigin="" />
+	<!-- leaflet script -->
+	<script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
+			integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
+			crossorigin=""></script>
+	<!-- vue script -->
+	<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+	<!-- jquery script -->
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<!-- our stylesheet -->
+	<link rel="stylesheet" href="map.css" />
+</head>
+
+<body>
+	<!-- navigation panel -->
+	<div id="navigation">
+		<ul class="navigation">
+			<li class="navigation"> <a class="navigation" href="https://salm5396.github.io/AirQuality/map.html" target="_self"> Air Quality Map </a> </li>
+			<li class="navigation"> <a class="navigation" href="https://salm5396.github.io/AirQuality/about.html" target="_self"> About the Project </a> </li>
+		</ul>
+	</div>
+	<!-- page header -->
+	<h1 id="header"> Air Quality Map </h1>
+
+
+
+
+	<!-- input box #1 -->
+	<div id="inputbox1" class="inputbox">
+		<p>
+			Latitude: <input v-model="latitude">
+			Longitude: <input v-model="longitude">
+			<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Change Coordinates </button>
+		</p>
+		<p>
+			Location: <input v-model="location">
+			<button style="background-color: #0026ff; color: white;" v-on:click="changeLoc"> Change Location </button>
+			Filter By Particle: <select v-model="filter">
+				<option value="none"> All Particles </option>
+				<option value="pm25"> pm25 </option>
+				<option value="pm10"> pm10 </option>
+				<option value="co"> co </option>
+				<option value="so2"> so2 </option>
+				<option value="o3"> o3 </option>
+			</select>
+			<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Filter </button>
+		</p>
+	</div>
+
+	<!-- input box #2 -->
+	<div id="inputbox2" class="inputbox">
+		<p>
+			Latitude: <input v-model="latitude">
+			Longitude: <input v-model="longitude">
+			<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Change Coordinates </button>
+		</p>
+		<p>
+			Location: <input v-model="location">
+			<button style="background-color: #0026ff; color: white;" v-on:click="changeLoc"> Change Location </button>
+			Filter By Particle: <select v-model="filter">
+				<option value="none"> All Particles </option>
+				<option value="pm25"> pm25 </option>
+				<option value="pm10"> pm10 </option>
+				<option value="co"> co </option>
+				<option value="so2"> so2 </option>
+				<option value="o3"> o3 </option>
+			</select>
+			<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Filter </button>
+		</p>
+	</div>
+	<div id="map"> </div>
+	<div id="map2"> </div>
+
+	<div id="bottomLeft">
+		</br>
+		<!-- legend -->
+		<div id="under">
+			<h3 style="margin: 5px;">Legend</h3>
+			<table id="legend">
+				<tr>
+					<td><span style="background-color:rgb(0,288,0)">____</span></td>
+					<td>Good</td>
+					<td><span style="background-color:rgb(255,255,0)">____</span></td>
+					<td>Moderate</td>
+					<td><span style="background-color:rgb(255,126,0)">____</span></td>
+					<td>Unhealty for Sensitive Groups</td>
+					<td><span style="background-color:rgb(255,0,0)">____</span></td>
+					<td>Unhealthy</td>
+					<td><span style="background-color:rgb(126,0,35)">____</span></td>
+					<td>Hazardous</td>
+				</tr>
+			</table>
+		</div>
+		<!-- table -->
+		<h1 id="tableheader"> Air Quality Measurements </h1>
+		</br>
+		<div id="table">
+			<table id="results1" align="center">
+				<tr>
+					<td><b> Particle </b></td>
+					<td><b> Value </b></td>
+					<td><b> Unit </b></td>
+					<td><b> Location </b></td>
+					<td><b> Date </b></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div id="bottomRight">
+		</br>
+		<!-- legend -->
+		<div id="under">
+			<h3 style="margin: 5px;">Legend</h3>
+			<table id="legend">
+				<tr>
+					<td><span style="background-color:rgb(0,288,0)">____</span></td>
+					<td>Good</td>
+					<td><span style="background-color:rgb(255,255,0)">____</span></td>
+					<td>Moderate</td>
+					<td><span style="background-color:rgb(255,126,0)">____</span></td>
+					<td>Unhealty for Sensitive Groups</td>
+					<td><span style="background-color:rgb(255,0,0)">____</span></td>
+					<td>Unhealthy</td>
+					<td><span style="background-color:rgb(126,0,35)">____</span></td>
+					<td>Hazardous</td>
+				</tr>
+			</table>
+		</div>
+		<!-- table -->
+		<h1 id="tableheader"> Air Quality Measurements </h1>
+		</br>
+		<div id="table">
+			<table id="results2" align="center">
+				<tr>
+					<td><b> Particle </b></td>
+					<td><b> Value </b></td>
+					<td><b> Unit </b></td>
+					<td><b> Location </b></td>
+					<td><b> Date </b></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<script>
+		//global variable to determine which map and table to update
+		var mapMoved;
+
+		var mymap = L.map('map').setView([44.973572561901726, -93.25746774673463], 14.5);
+		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+			maxZoom: 18,
+			id: 'mapbox.streets',
+			accessToken: 'pk.eyJ1IjoiYmxhczE2NjMiLCJhIjoiY2pubnBpb3k2MHY1dzNrbnhlZDg2dDh3bCJ9.zVKhV-UYABeLItMitLFrjw',
+		}).addTo(mymap);
+
+		var mymap2 = L.map('map2').setView([44.973572561901726, -93.25746774673463], 14.5);
+		L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+			maxZoom: 18,
+			id: 'mapbox.streets',
+			accessToken: 'pk.eyJ1IjoiYmxhczE2NjMiLCJhIjoiY2pubnBpb3k2MHY1dzNrbnhlZDg2dDh3bCJ9.zVKhV-UYABeLItMitLFrjw',
+		}).addTo(mymap2);
+
+		var inputbox1 = new Vue({
+			el: '#inputbox1',
+			data: {
+				latitude: '44.973572561901726',
+				longitude: '-93.25746774673463',
+				location: 'US Bank Stadium',
+				latlng: true,
+				filter: 'none'
+
+			},
+			methods: {
+				changeLatLng: function () {
+					var request = {
+						url: "https://us1.locationiq.com/v1/reverse.php?key=760f1644b0fbbc&lat=" + this.latitude + "&lon=" + this.longitude + "&format=json",
+						dataType: "json",
+						success: latlngData
+					};
+					$.ajax(request);
+					function latlngData(data) {
+						inputbox1.location = data.display_name.substr(0, data.display_name.indexOf(','));
+						mymap.panTo(new L.LatLng(inputbox1.latitude, inputbox1.longitude));
+					}
+				},
+				changeLoc: function () {
+					var request = {
+						url: "https://us1.locationiq.com/v1/search.php?key=760f1644b0fbbc&q=" + this.location + "&format=json",
+						dataType: "json",
+						success: locationData
+					};
+					$.ajax(request);
+					function locationData(data) {
+						this.latitude = data[0].lat;
+						this.longitude = data[0].lon;
+						mymap.panTo(new L.LatLng(this.latitude, this.longitude));
+					}
+					this.latlng = false;
+				}
+			}
+		})
+		getAirData();
+
+		var inputbox2 = new Vue({
+			el: '#inputbox2',
+			data: {
+				latitude: '44.973572561901726',
+				longitude: '-93.25746774673463',
+				location: 'US Bank Stadium',
+				latlng: true,
+				filter: 'none'
+
+			},
+			methods: {
+				changeLatLng: function () {
+					var request = {
+						url: "https://us1.locationiq.com/v1/reverse.php?key=760f1644b0fbbc&lat=" + this.latitude + "&lon=" + this.longitude + "&format=json",
+						dataType: "json",
+						success: latlngData
+					};
+					$.ajax(request);
+					function latlngData(data) {
+						inputbox2.location = data.display_name.substr(0, data.display_name.indexOf(','));
+						mymap2.panTo(new L.LatLng(inputbox2.latitude, inputbox2.longitude));
+					}
+				},
+				changeLoc: function () {
+					var request = {
+						url: "https://us1.locationiq.com/v1/search.php?key=760f1644b0fbbc&q=" + this.location + "&format=json",
+						dataType: "json",
+						success: locationData
+					};
+					$.ajax(request);
+					function locationData(data) {
+						this.latitude = data[0].lat;
+						this.longitude = data[0].lon;
+						mymap2.panTo(new L.LatLng(this.latitude, this.longitude));
+					}
+					this.latlng = false;
+				}
+			}
+		})
+		getAirData2();
+
+		mymap.on('moveend', function () {
+			var center = mymap.getCenter();
+			inputbox1.longitude = center.lng;
+			inputbox1.latitude = center.lat;
+			var request = {
+				url: "https://us1.locationiq.com/v1/reverse.php?key=760f1644b0fbbc&lat=" + inputbox1.latitude + "&lon=" + inputbox1.longitude + "&format=json",
+				dataType: "json",
+				success: moveData
+			};
+			$.ajax(request);
+			function moveData(data) {
+				if (inputbox1.latlng == true) {
+					inputbox1.location = data.display_name.substr(0, data.display_name.indexOf(','));
+				}
+				inputbox1.latlng = true;
+			}
+			mapMoved = 1;
+			getAirData();
+		});
+
+		mymap2.on('moveend', function () {
+			var center = mymap2.getCenter();
+			inputbox2.longitude = center.lng;
+			inputbox2.latitude = center.lat;
+			var request = {
+				url: "https://us1.locationiq.com/v1/reverse.php?key=760f1644b0fbbc&lat=" + inputbox2.latitude + "&lon=" + inputbox2.longitude + "&format=json",
+				dataType: "json",
+				success: moveData
+			};
+			$.ajax(request);
+			function moveData(data) {
+				if (inputbox2.latlng == true) {
+					inputbox2.location = data.display_name.substr(0, data.display_name.indexOf(','));
+				}
+				inputbox2.latlng = true;
+			}
+			mapMoved = 2;
+			getAirData2();
+		});
+
+		//this function fetches the air data with given latitude and longitude
+		function getAirData() {
+			var latitude = inputbox1.latitude;
+			var longitude = inputbox1.longitude;
+			var distance1 = new L.LatLng(latitude, longitude);
+			var distance2 = new L.LatLng(latitude, mymap.getBounds().getWest());
+			var distance = mymap.distance(distance1, distance2);
+
+			var radius = distance;
+
+			var url1 = "https://api.openaq.org/v1/latest?coordinates=" + latitude + "," + longitude + "&radius=" + radius + "&limit=100";
+
+			if (inputbox1.filter != "none") {
+				console.log("filtering")
+				url1 = url1 + "&parameter=" + inputbox1.filter + "";
+			}
+			$.ajax({
+				url: url1,
+				type: 'get',
+				dataType: 'html',
+				async: true,
+				success: handleData
+			});
+		}
+
+
+		//this function fetches the air data with given latitude and longitude
+		function getAirData2() {
+			var latitude = inputbox2.latitude;
+			var longitude = inputbox2.longitude;
+			var distance1 = new L.LatLng(latitude, longitude);
+			var distance2 = new L.LatLng(latitude, mymap2.getBounds().getWest());
+			var distance = mymap2.distance(distance1, distance2);
+
+			var radius = distance;
+
+			var url1 = "https://api.openaq.org/v1/latest?coordinates=" + latitude + "," + longitude + "&radius=" + radius + "&limit=100";
+
+			if (inputbox2.filter != "none") {
+				console.log("filtering")
+				url1 = url1 + "&parameter=" + inputbox2.filter + "";
+			}
+			$.ajax({
+				url: url1,
+				type: 'get',
+				dataType: 'html',
+				async: true,
+				success: handleData
+			});
+		}
+		function populateTable(data) {
+
+			var table = document.getElementById("results" + mapMoved);
+			table.innerHTML = "";//emptys table of previous data points
+			var param = "";
+			var val = "";
+			var location = "";
+			var date = "";
+			var unit = "";
+			var current;
+			var htmlStr = "";
+			var color = "";
+			var colorstring = "";
+
+			var header = "<td><b>Particle</b></td><td><b>Value</b></td><td><b>Unit</b></td><td><b>Location</b></td><td><b>Date</b></td>";
+			var headrow = table.insertRow(0);
+			headrow.innerHTML = header;
+
+
+			for (var i = 0; i < data.results.length; i++) {//loops through the measurement locations
+				location = data.results[i].location;
+				current = data.results[i];
+				for (var j = 0; j < current.measurements.length; j++) {//loop through each measurement at location
+					param = current.measurements[j].parameter;
+					val = current.measurements[j].value;
+					unit = current.measurements[j].unit;
+					date = current.measurements[j].lastUpdated;
+
+					color = colorize(param, val);
+
+					//creating row in table
+					//row format is param, value,unit,location,date
+					var newRow = table.insertRow(-1);
+					htmlStr = "<td>" + param + "</td><td>" + val + colorstring + "</td><td>" + unit + "</td><td>" + location + "</td><td>" + date + "</td>"
+
+					//console.log(htmlStr);
+					newRow.innerHTML = htmlStr;
+					newRow.style.backgroundColor = color;
+				}
+			}
+			//console.log(colorstring);
+		}//populate table
+
+		function handleData(airdata) {
+			var data = JSON.parse(airdata);
+			locations(data);
+			populateTable(data);
+		}// handle data and calls the populate function to fill tables
+
+		function locations(data) {
+			//function handles the locations that are retrieved from getLocations
+
+			var locationLat;
+			var locationLon;
+
+			//if the first map has to be updated
+			if (mapMoved == 1) {
+				for (var i = 0; i < data.results.length; i++) {
+					locationLat = data.results[i].coordinates.latitude;//get lattitude of location[i]
+					locationLon = data.results[i].coordinates.longitude;//get longitude of location[i]
+					var marker = L.marker(new L.LatLng(locationLat, locationLon)).addTo(mymap);
+					marker;
+				}//results1 loop
+			}
+
+			//if the second map has to be updated
+			if (mapMoved == 2) {
+				for (var i = 0; i < data.results.length; i++) {
+					locationLat = data.results[i].coordinates.latitude;//get lattitude of location[i]
+					locationLon = data.results[i].coordinates.longitude;//get longitude of location[i]
+					var marker = L.marker(new L.LatLng(locationLat, locationLon)).addTo(mymap2);
+					marker;
+				}//results2 loop
+			}
+
+		}
+
+		//color the table
+		function colorize(param, value) {
+			//will get passed parameter and value returns span tag used in colorizing
+			var good = "rgb(0,288,0)";
+			var moderate = "rgb(255,255,0)";
+			var unhealthyForSensitve = "rgb(255,126,0)";
+			var unhealthy = "rgb(255,0,0)";
+			var veryUnhealthy = "rgb(143,63,151)";
+			var hazardous = "rgb(126,0,35)";
+
+			//pm25
+			if (param == "pm25") {
+				if (value <= 12.0) {
+					return good;
+				}
+				else if (value >= 12.1 && value <= 35.4) {
+					return moderate;
+				}
+				else if (value >= 35.5 && value <= 55.4) {
+					return unhealthyForSensitve;
+				}
+				else if (value >= 55.5 && value <= 150.4) {
+					return unhealthy;
+				}
+				else if (value >= 150.5 && value <= 250.4) {
+					return veryUnhealthy;
+				}
+				else if (value >= 250.5) {
+					return hazardous;
+				}
+			}//pm25
+			if (param == "co") {
+				if (value <= 4.4) {
+					return good;
+				}
+				else if (value >= 4.5 && value <= 9.4) {
+					return moderate;
+				}
+				else if (value >= 9.5 && value <= 12.4) {
+					return unhealthyForSensitve;
+				}
+				else if (value >= 12.5 && value <= 15.4) {
+					return unhealthy;
+				}
+				else if (value >= 15.5 && value <= 30.4) {
+					return veryUnhealthy;
+				}
+				else if (value >= 30.5) {
+					return hazardous;
+				}
+			}//co
+			if (param == "so2") {
+				if (value <= 35) {
+					return good;
+				}
+				else if (value >= 36 && value <= 75) {
+					return moderate;
+				}
+				else if (value >= 76 && value <= 185) {
+					return unhealthyForSensitve;
+				}
+				else if (value >= 186 && value <= 304) {
+					return unhealthy;
+				}
+				else if (value >= 305 && value <= 604) {
+					return veryUnhealthy;
+				}
+				else if (value >= 605) {
+					return hazardous;
+				}
+			}//so2
+			if (param == "o3") {
+				if (value <= .054) {
+					return good;
+				}
+				else if (value >= .055 && value <= .07) {
+					return moderate;
+				}
+				else if (value >= .071 && value <= .085) {
+					return unhealthyForSensitve;
+				}
+				else if (value >= .086 && value <= .105) {
+					return unhealthy;
+				}
+				else if (value >= .106 && value <= .206) {
+					return veryUnhealthy;
+				}
+				else if (value >= .207) {
+					return hazardous;
+				}
+			}//o3
+			if (param == "no2") {
+				if (value <= 53) {
+					return good;
+				}
+				else if (value >= 54 && value <= 100) {
+					return moderate;
+				}
+				else if (value >= 101 && value <= 360) {
+					return unhealthyForSensitve;
+				}
+				else if (value >= 361 && value <= 649) {
+					return unhealthy;
+				}
+				else if (value >= 650 && value <= 1244) {
+					return veryUnhealthy;
+				}
+				else if (value >= 1250) {
+					return hazardous;
+				}
+			}//no2
+			if (param == "pm10") {
+				if (value <= 54) {
+					return good;
+				}
+				else if (value >= 55 && value <= 154) {
+					return moderate;
+				}
+				else if (value >= 155 && value <= 254) {
+					return unhealthyForSensitve;
+				}
+				else if (value >= 255 && value <= 354) {
+					return unhealthy;
+				}
+				else if (value >= 355 && value <= 424) {
+					return veryUnhealthy;
+				}
+				else if (value >= 425) {
+					return hazardous;
+				}
+			}//no2
+			return null;
+		}
+	</script>
+</body>
+</html>
