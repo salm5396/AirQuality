@@ -24,7 +24,7 @@
 		<!-- navigation panel -->
 		<div id="navigation">
 			<ul class="navigation">
-				<li class="navigation"> <a class="navigation" href="https://salm5396.github.io/AirQuality/index.html" target="_self"> Air Quality Map </a> </li>
+				<li class="navigation"> <a class="navigation" href="https://salm5396.github.io/AirQuality/map.html" target="_self"> Air Quality Map </a> </li>
 				<li class="navigation"> <a class="navigation" href="https://salm5396.github.io/AirQuality/about.html" target="_self"> About the Project </a> </li>
 			</ul>
 		</div>
@@ -32,129 +32,185 @@
 		<h1 id="header"> Air Quality Map </h1>
 
 
-
-
-		<!-- input box #1 -->
-		<div id="inputbox1" class="inputbox">
-			<p>
-				Latitude: <input v-model="latitude">
-				Longitude: <input v-model="longitude">
-				<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Change Coordinates </button>
-			</p>
-			<p>
-				Location: <input v-model="location">
-				<button style="background-color: #0026ff; color: white;" v-on:click="changeLoc"> Change Location </button>
-				Filter By Particle: <select v-model="filter">
-					<option value="none"> All Particles </option>
-					<option value="pm25"> pm25 </option>
-					<option value="pm10"> pm10 </option>
-					<option value="co"> co </option>
-					<option value="so2"> so2 </option>
-					<option value="o3"> o3 </option>
-				</select>
-				<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Filter </button>
-			</p>
-		</div>
-
-		<!-- input box #2 -->
-		<div id="inputbox2" class="inputbox">
-			<p>
-				Latitude: <input v-model="latitude">
-				Longitude: <input v-model="longitude">
-				<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Change Coordinates </button>
-			</p>
-			<p>
-				Location: <input v-model="location">
-				<button style="background-color: #0026ff; color: white;" v-on:click="changeLoc"> Change Location </button>
-				Filter By Particle: <select v-model="filter">
-					<option value="none"> All Particles </option>
-					<option value="pm25"> pm25 </option>
-					<option value="pm10"> pm10 </option>
-					<option value="co"> co </option>
-					<option value="so2"> so2 </option>
-					<option value="o3"> o3 </option>
-				</select>
-				<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Filter </button>
-			</p>
-		</div>
+		<div id="fullscreen1" style="background-color: white; width: 45%; float:left;">
+			<!-- input box #1 -->
+			<div id="inputbox1" class="inputbox">
+				<p>
+					Latitude: <input v-model="latitude">
+					Longitude: <input v-model="longitude">
+					<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Change Coordinates </button>
+				</p>
+				<p>
+					Location: <input v-model="location">
+					<button style="background-color: #0026ff; color: white;" v-on:click="changeLoc"> Change Location </button>
+					Filter By Particle: <select v-model="filter">
+						<option value="none"> All Particles </option>
+						<option value="pm25"> pm25 </option>
+						<option value="pm10"> pm10 </option>
+						<option value="co"> co </option>
+						<option value="so2"> so2 </option>
+						<option value="o3"> o3 </option>
+					</select>
+					<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Filter </button>
+				</p>
+				<button id="open1" style="background-color: #197519; color: white; float:left" onclick="openFullscreen()"> Click for Fullscreen </button>
+				<button id="close1" style="background-color: #197519; color: white; visibility: hidden; float:left" onclick="closeFullscreen();"> Click for Regular Screen </button>
+			</div>
 			<div id="map"> </div>
-			<div id="map2"> </div>
+		</div>
 
-				<div id="bottomLeft">
-					
-					<!-- legend -->
-					<div id="under">
-						<h3 style="margin: 5px;">Table Color Legend</h3>
-						<table id="legend">
-							<tr>
-								<td><span style="background-color:rgb(0,288,0)">____</span></td>
-								<td>Good</td>
-								<td><span style="background-color:rgb(255,255,0)">____</span></td>
-								<td>Moderate</td>
-								<td><span style="background-color:rgb(255,126,0)">____</span></td>
-								<td>Unhealty for Sensitive Groups</td>
-								<td><span style="background-color:rgb(255,0,0)">____</span></td>
-								<td>Unhealthy</td>
-								<td><span style="background-color:rgb(126,0,35)">____</span></td>
-								<td>Hazardous</td>
-							</tr>
-						</table>
-					</div>
-					<!-- table -->
-					<h1 id="tableheader"> Air Quality Measurements </h1>
-					
-					<div id="table">
-						<table id="results1" align="center">
-							<tr>
-								<td><b> Particle </b></td>
-								<td><b> Value </b></td>
-								<td><b> Unit </b></td>
-								<td><b> Location </b></td>
-								<td><b> Date </b></td>
-							</tr>
-						</table>
-					</div>
-				</div>
-				<div id="bottomRight">
-					
-					<!-- legend -->
-					<div id="under">
-						<h3 style="margin: 5px;">Table Color Legend</h3>
-						<table id="legend">
-							<tr>
-								<td><span style="background-color:rgb(0,288,0)">____</span></td>
-								<td>Good</td>
-								<td><span style="background-color:rgb(255,255,0)">____</span></td>
-								<td>Moderate</td>
-								<td><span style="background-color:rgb(255,126,0)">____</span></td>
-								<td>Unhealty for Sensitive Groups</td>
-								<td><span style="background-color:rgb(255,0,0)">____</span></td>
-								<td>Unhealthy</td>
-								<td><span style="background-color:rgb(126,0,35)">____</span></td>
-								<td>Hazardous</td>
-							</tr>
-						</table>
-					</div>
-					<!-- table -->
-					<h1 id="tableheader"> Air Quality Measurements </h1>
-					
-					<div id="table">
-						<table id="results2" align="center">
-							<tr>
-								<td><b> Particle </b></td>
-								<td><b> Value </b></td>
-								<td><b> Unit </b></td>
-								<td><b> Location </b></td>
-								<td><b> Date </b></td>
-							</tr>
-						</table>
-					</div>
-				</div>
-	
+		<div id="fullscreen2" style="background-color: white; width: 45%; float:right;">
+			<div id="inputbox2" class="inputbox">
+				<p>
+					Latitude: <input v-model="latitude">
+					Longitude: <input v-model="longitude">
+					<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Change Coordinates </button>
+				</p>
+				<p>
+					Location: <input v-model="location">
+					<button style="background-color: #0026ff; color: white;" v-on:click="changeLoc"> Change Location </button>
+					Filter By Particle: <select v-model="filter">
+						<option value="none"> All Particles </option>
+						<option value="pm25"> pm25 </option>
+						<option value="pm10"> pm10 </option>
+						<option value="co"> co </option>
+						<option value="so2"> so2 </option>
+						<option value="o3"> o3 </option>
+					</select>
+					<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Filter </button>
+				</p>
+				<button id="open2" style="background-color: #197519; color: white; float:left" onclick="openFullscreen2()"> Click for Fullscreen </button>
+				<button id="close2" style="background-color: #197519; color: white; visibility: hidden; float:left" onclick="closeFullscreen2();"> Click for Regular Screen </button>
+			</div>
+			<div id="map2"> </div>
+		</div>
+
+
+		<!--
+	div id="inputbox1" class="inputbox">
+	<p>
+		Latitude: <input v-model="latitude">
+		Longitude: <input v-model="longitude">
+		<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Change Coordinates </button>
+	</p>
+	<p>
+		Location: <input v-model="location">
+		<button style="background-color: #0026ff; color: white;" v-on:click="changeLoc"> Change Location </button>
+		Filter By Particle: <select v-model="filter">
+			<option value="none"> All Particles </option>
+			<option value="pm25"> pm25 </option>
+			<option value="pm10"> pm10 </option>
+			<option value="co"> co </option>
+			<option value="so2"> so2 </option>
+			<option value="o3"> o3 </option>
+		</select>
+		<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Filter </button>
+	</p>
+	</div>
+	-->
+		
+	<!-- 
+		<div id="inputbox2" class="inputbox">
+		<p>
+			Latitude: <input v-model="latitude">
+			Longitude: <input v-model="longitude">
+			<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Change Coordinates </button>
+		</p>
+		<p>
+			Location: <input v-model="location">
+			<button style="background-color: #0026ff; color: white;" v-on:click="changeLoc"> Change Location </button>
+			Filter By Particle: <select v-model="filter">
+				<option value="none"> All Particles </option>
+				<option value="pm25"> pm25 </option>
+				<option value="pm10"> pm10 </option>
+				<option value="co"> co </option>
+				<option value="so2"> so2 </option>
+				<option value="o3"> o3 </option>
+			</select>
+			<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Filter </button>
+		</p>
+		</div>
+	-->
+		<!--
+		<div id="map"> </div>
+		<div id="map2"> </div>
+		-->
+		<div id="bottomLeft">
+
+			<!-- legend -->
+			<div id="under">
+				<h3 style="margin: 5px;">Table Color Legend</h3>
+				<table id="legend">
+					<tr>
+						<td><span style="background-color:rgb(0,288,0)">____</span></td>
+						<td>Good</td>
+						<td><span style="background-color:rgb(255,255,0)">____</span></td>
+						<td>Moderate</td>
+						<td><span style="background-color:rgb(255,126,0)">____</span></td>
+						<td>Unhealty for Sensitive Groups</td>
+						<td><span style="background-color:rgb(255,0,0)">____</span></td>
+						<td>Unhealthy</td>
+						<td><span style="background-color:rgb(126,0,35)">____</span></td>
+						<td>Hazardous</td>
+					</tr>
+				</table>
+			</div>
+			<!-- table -->
+			<h1 id="tableheader"> Air Quality Measurements </h1>
+
+			<div id="table">
+				<table id="results1" align="center">
+					<tr>
+						<td><b> Particle </b></td>
+						<td><b> Value </b></td>
+						<td><b> Unit </b></td>
+						<td><b> Location </b></td>
+						<td><b> Date </b></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div id="bottomRight">
+
+			<!-- legend -->
+			<div id="under">
+				<h3 style="margin: 5px;">Table Color Legend</h3>
+				<table id="legend">
+					<tr>
+						<td><span style="background-color:rgb(0,288,0)">____</span></td>
+						<td>Good</td>
+						<td><span style="background-color:rgb(255,255,0)">____</span></td>
+						<td>Moderate</td>
+						<td><span style="background-color:rgb(255,126,0)">____</span></td>
+						<td>Unhealty for Sensitive Groups</td>
+						<td><span style="background-color:rgb(255,0,0)">____</span></td>
+						<td>Unhealthy</td>
+						<td><span style="background-color:rgb(126,0,35)">____</span></td>
+						<td>Hazardous</td>
+					</tr>
+				</table>
+			</div>
+			<!-- table -->
+			<h1 id="tableheader"> Air Quality Measurements </h1>
+
+			<div id="table">
+				<table id="results2" align="center">
+					<tr>
+						<td><b> Particle </b></td>
+						<td><b> Value </b></td>
+						<td><b> Unit </b></td>
+						<td><b> Location </b></td>
+						<td><b> Date </b></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
 		<script>
 			//global variable to determine which map and table to update
 			var mapMoved;
 
+			//creating the first map with a default location of US Bank
 			var mymap = L.map('map').setView([44.973572561901726, -93.25746774673463], 14.5);
 			L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 				attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -173,6 +229,8 @@
 				accessToken: 'pk.eyJ1IjoiYmxhczE2NjMiLCJhIjoiY2pubnBpb3k2MHY1dzNrbnhlZDg2dDh3bCJ9.zVKhV-UYABeLItMitLFrjw',
 			}).addTo(mymap2);
 
+			//Vue components and functions to get back the locations for the first map based on lat long or specified location
+			//ex. (45, -93) int lat long, or London (in change location input)
 			var inputbox1 = new Vue({
 				el: '#inputbox1',
 				data: {
@@ -186,7 +244,7 @@
 				methods: {
 					changeLatLng: function () {
 						var request = {
-							url: "https://nominatim.openstreetmap.org/reverse?lat=" + this.latitude + "&lon=" + this.longitude+ "&format=json",
+							url: "https://nominatim.openstreetmap.org/reverse?lat=" + this.latitude + "&lon=" + this.longitude + "&format=json",
 							dataType: "json",
 							success: latlngData
 						};
@@ -214,6 +272,8 @@
 			})
 			getAirData();
 
+			//Vue components and functions to get back the locations for the second map based on lat long or specified location
+			//ex. (45, -93) int lat long, or London (in change location input)
 			var inputbox2 = new Vue({
 				el: '#inputbox2',
 				data: {
@@ -260,7 +320,7 @@
 				inputbox1.longitude = center.lng;
 				inputbox1.latitude = center.lat;
 				var request = {
-					url: "https://nominatim.openstreetmap.org/reverse?lat="  + inputbox1.latitude + "&lon=" + inputbox1.longitude + "&format=json",
+					url: "https://nominatim.openstreetmap.org/reverse?lat=" + inputbox1.latitude + "&lon=" + inputbox1.longitude + "&format=json",
 					dataType: "json",
 					success: moveData
 				};
@@ -280,7 +340,7 @@
 				inputbox2.longitude = center.lng;
 				inputbox2.latitude = center.lat;
 				var request = {
-					url: "https://nominatim.openstreetmap.org/reverse?lat="  + inputbox2.latitude + "&lon=" + inputbox2.longitude + "&format=json",
+					url: "https://nominatim.openstreetmap.org/reverse?lat=" + inputbox2.latitude + "&lon=" + inputbox2.longitude + "&format=json",
 					dataType: "json",
 					success: moveData
 				};
@@ -295,7 +355,7 @@
 				getAirData2();
 			});
 
-			//this function fetches the air data with given latitude and longitude
+			//Function to fetche the air data for map 1 with radius calculated
 			function getAirData() {
 				var latitude = inputbox1.latitude;
 				var longitude = inputbox1.longitude;
@@ -305,14 +365,14 @@
 
 				var radius = distance;
 
-				var url1 = "https://api.openaq.org/v1/latest?coordinates=" + latitude + "," + longitude + "&radius=" + radius + "&limit=10000";
+				var url = "https://api.openaq.org/v1/latest?coordinates=" + latitude + "," + longitude + "&radius=" + radius + "&limit=10000";
 
 				if (inputbox1.filter != "none") {
 					console.log("filtering")
-					url1 = url1 + "&parameter=" + inputbox1.filter + "";
+					url = url + "&parameter=" + inputbox1.filter + "";
 				}
 				$.ajax({
-					url: url1,
+					url: url,
 					type: 'get',
 					dataType: 'html',
 					async: true,
@@ -321,32 +381,33 @@
 			}
 
 
-			//this function fetches the air data with given latitude and longitude
+			//Function to fetche the air data for the second map within the radius calculated
 			function getAirData2() {
 				var latitude = inputbox2.latitude;
 				var longitude = inputbox2.longitude;
 				var distance1 = new L.LatLng(latitude, longitude);
 				var distance2 = new L.LatLng(latitude, mymap2.getBounds().getWest());
 				var distance = mymap2.distance(distance1, distance2);
-
 				var radius = distance;
 
-				var url1 = "https://api.openaq.org/v1/latest?coordinates=" + latitude + "," + longitude + "&radius=" + radius + "&limit=100";
+				var url = "https://api.openaq.org/v1/latest?coordinates=" + latitude + "," + longitude + "&radius=" + radius + "&limit=10000";
 
 				if (inputbox2.filter != "none") {
 					console.log("filtering")
-					url1 = url1 + "&parameter=" + inputbox2.filter + "";
+					url = url + "&parameter=" + inputbox2.filter + "";
 				}
 				$.ajax({
-					url: url1,
+					url: url,
 					type: 'get',
 					dataType: 'html',
 					async: true,
 					success: handleData
 				});
 			}
-			function populateTable(data) {
 
+			//Function to populate the tables with the particle values.
+			//Global variable mapMoved helps to determine which map's table should be updated.
+			function populateTable(data) {
 				var table = document.getElementById("results" + mapMoved);
 				table.innerHTML = "";//emptys table of previous data points
 				var param = "";
@@ -388,15 +449,15 @@
 				//console.log(colorstring);
 			}//populate table
 
+			// handle data and calls the populate function to fill tables
 			function handleData(airdata) {
 				var data = JSON.parse(airdata);
 				locations(data);
 				populateTable(data);
-			}// handle data and calls the populate function to fill tables
+			}
 
+			//function handles the locations that are retrieved from getLocations
 			function locations(data) {
-				//function handles the locations that are retrieved from getLocations
-				
 				var locationLat;
 				var locationLon;
 				var markerGroup1 = L.layerGroup().addTo(mymap);
@@ -420,10 +481,90 @@
 						marker;
 					}//results2 loop
 				}
-				
+
 			}
 
-			//color the table
+
+//FullScreen functions for opening and closing the first map and input boxes.
+			var elem = document.getElementById("fullscreen1");
+			var open = document.getElementById("open1");
+			var close = document.getElementById("close1");
+			function openFullscreen() {
+				var map = document.getElementById("map");
+				map.style.width = '100%';
+				map.style.height = '725px';
+				map.style.margin = 'auto';
+				var input = document.getElementById("inputbox1");
+				input.style.margin = '50px';
+				if (elem.requestFullscreen) {
+					elem.requestFullscreen();
+				}
+				else if (elem.webkitRequestFullscreen) {
+					elem.webkitRequestFullscreen();
+				}
+				open.style.visibility = 'hidden';
+				close.style.visibility = 'visible';
+				close.style.float = 'left';
+			}
+			function closeFullscreen() {
+				var map = document.getElementById("map");
+				map.style.width = '100%';
+				map.style.height = '540px';
+				var input = document.getElementById("inputbox1");
+				input.style.margin = '0px';
+				if (document.exitFullscreen) {
+					document.exitFullscreen();
+				}
+				else if (document.webkitExitFullscreen) {
+					document.webkitExitFullscreen();
+				}
+				open.style.visibility = 'visible';
+				close.style.visibility = 'hidden';
+				open.style.float = 'left';
+			}
+
+
+			///Fullscreen for map 2 stuff
+			var elem = document.getElementById("fullscreen2");
+			var open = document.getElementById("open2");
+			var close = document.getElementById("close2");
+			function openFullscreen2() {
+				var map = document.getElementById("map2");
+				map.style.width = '100%';
+				map.style.height = '725px';
+				map.style.margin = 'auto';
+				var input = document.getElementById("inputbox2");
+				input.style.margin = '50px';
+				if (elem.requestFullscreen) {
+					elem.requestFullscreen();
+				}
+				else if (elem.webkitRequestFullscreen) {
+					elem.webkitRequestFullscreen();
+				}
+				open.style.visibility = 'hidden';
+				close.style.visibility = 'visible';
+				close.style.float = 'left';
+			}
+			function closeFullscreen2() {
+				var map = document.getElementById("map2");
+				map.style.width = '100%';
+				map.style.height = '540px';
+				var input = document.getElementById("inputbox2");
+				input.style.margin = '0px';
+				if (document.exitFullscreen) {
+					document.exitFullscreen();
+				}
+				else if (document.webkitExitFullscreen) {
+					document.webkitExitFullscreen();
+				}
+				open.style.visibility = 'visible';
+				close.style.visibility = 'hidden';
+				open.style.float = 'left';
+			}
+
+
+
+			//Function to color the table with the correct rgb value depending on degree of severity
 			function colorize(param, value) {
 				//will get passed parameter and value returns span tag used in colorizing
 				var good = "rgb(0,288,0)";
