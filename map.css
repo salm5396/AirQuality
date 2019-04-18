@@ -1,4 +1,4 @@
-﻿/* Multiple Pages */
+/* Multiple Pages */
 html {
     font-size: 100%;
 }
@@ -86,16 +86,16 @@ button {
 }
 
 /* map */
-#map {
-    float:left;
-    height:540px;
-    width: 45%;
+#map1 {
+    height: 540px;
+    width: 100%;
+    float: left;
 }
 
 /* map2 */
 #map2 {
  
-    width: 45%;
+    width: 100%;
     height: 540px;
     float:right;
 }
