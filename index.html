@@ -33,7 +33,6 @@
 
 
 		<div id="fullscreen1" style="background-color: white; width: 45%; float:left;">
-			<!-- input box #1 -->
 			<div id="inputbox1" class="inputbox">
 				<p>
 					Latitude: <input v-model="latitude">
@@ -53,10 +52,10 @@
 					</select>
 					<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Filter </button>
 				</p>
-				<button id="open1" style="background-color: #197519; color: white; float:left" onclick="openFullscreen()"> Click for Fullscreen </button>
-				<button id="close1" style="background-color: #197519; color: white; visibility: hidden; float:left" onclick="closeFullscreen();"> Click for Regular Screen </button>
+				<button id="open1" style="background-color: #197519; color: white; float:left" onclick="openFullscreen(1)"> Click for Fullscreen </button>
+				<button id="close1" style="background-color: #197519; color: white; visibility: hidden; float:left" onclick="closeFullscreen(1);"> Click for Regular Screen </button>
 			</div>
-			<div id="map"> </div>
+			<div id="map1"> </div>
 		</div>
 
 		<div id="fullscreen2" style="background-color: white; width: 45%; float:right;">
@@ -79,62 +78,12 @@
 					</select>
 					<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Filter </button>
 				</p>
-				<button id="open2" style="background-color: #197519; color: white; float:left" onclick="openFullscreen2()"> Click for Fullscreen </button>
-				<button id="close2" style="background-color: #197519; color: white; visibility: hidden; float:left" onclick="closeFullscreen2();"> Click for Regular Screen </button>
+				<button id="open2" style="background-color: #197519; color: white; float:left" onclick="openFullscreen(2)"> Click for Fullscreen </button>
+				<button id="close2" style="background-color: #197519; color: white; visibility: hidden; float:left" onclick="closeFullscreen(2);"> Click for Regular Screen </button>
 			</div>
 			<div id="map2"> </div>
 		</div>
 
-
-		<!--
-	div id="inputbox1" class="inputbox">
-	<p>
-		Latitude: <input v-model="latitude">
-		Longitude: <input v-model="longitude">
-		<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Change Coordinates </button>
-	</p>
-	<p>
-		Location: <input v-model="location">
-		<button style="background-color: #0026ff; color: white;" v-on:click="changeLoc"> Change Location </button>
-		Filter By Particle: <select v-model="filter">
-			<option value="none"> All Particles </option>
-			<option value="pm25"> pm25 </option>
-			<option value="pm10"> pm10 </option>
-			<option value="co"> co </option>
-			<option value="so2"> so2 </option>
-			<option value="o3"> o3 </option>
-		</select>
-		<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Filter </button>
-	</p>
-	</div>
-	-->
-		
-	<!-- 
-		<div id="inputbox2" class="inputbox">
-		<p>
-			Latitude: <input v-model="latitude">
-			Longitude: <input v-model="longitude">
-			<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Change Coordinates </button>
-		</p>
-		<p>
-			Location: <input v-model="location">
-			<button style="background-color: #0026ff; color: white;" v-on:click="changeLoc"> Change Location </button>
-			Filter By Particle: <select v-model="filter">
-				<option value="none"> All Particles </option>
-				<option value="pm25"> pm25 </option>
-				<option value="pm10"> pm10 </option>
-				<option value="co"> co </option>
-				<option value="so2"> so2 </option>
-				<option value="o3"> o3 </option>
-			</select>
-			<button style="background-color: #0026ff; color: white;" v-on:click="changeLatLng"> Filter </button>
-		</p>
-		</div>
-	-->
-		<!--
-		<div id="map"> </div>
-		<div id="map2"> </div>
-		-->
 		<div id="bottomLeft">
 
 			<!-- legend -->
@@ -211,7 +160,7 @@
 			var mapMoved;
 
 			//creating the first map with a default location of US Bank
-			var mymap = L.map('map').setView([44.973572561901726, -93.25746774673463], 14.5);
+			var mymap = L.map('map1').setView([44.973572561901726, -93.25746774673463], 14.5);
 			L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 				attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 				minZoom: 9,
@@ -485,16 +434,16 @@
 			}
 
 
-//FullScreen functions for opening and closing the first map and input boxes.
-			var elem = document.getElementById("fullscreen1");
-			var open = document.getElementById("open1");
-			var close = document.getElementById("close1");
-			function openFullscreen() {
-				var map = document.getElementById("map");
+//Fullscreen for maps functions like opening and closing
+			function openFullscreen(mapToFull) {
+				var elem = document.getElementById("fullscreen" + mapToFull);
+				var open = document.getElementById("open" + mapToFull);
+				var close = document.getElementById("close" + mapToFull);
+				var map = document.getElementById("map" + mapToFull);
 				map.style.width = '100%';
 				map.style.height = '725px';
 				map.style.margin = 'auto';
-				var input = document.getElementById("inputbox1");
+				var input = document.getElementById("inputbox" + mapToFull);
 				input.style.margin = '50px';
 				if (elem.requestFullscreen) {
 					elem.requestFullscreen();
@@ -506,50 +455,11 @@
 				close.style.visibility = 'visible';
 				close.style.float = 'left';
 			}
-			function closeFullscreen() {
-				var map = document.getElementById("map");
+			function closeFullscreen(mapToFull) {
+				var map = document.getElementById("map" + mapToFull);
 				map.style.width = '100%';
 				map.style.height = '540px';
-				var input = document.getElementById("inputbox1");
-				input.style.margin = '0px';
-				if (document.exitFullscreen) {
-					document.exitFullscreen();
-				}
-				else if (document.webkitExitFullscreen) {
-					document.webkitExitFullscreen();
-				}
-				open.style.visibility = 'visible';
-				close.style.visibility = 'hidden';
-				open.style.float = 'left';
-			}
-
-
-			///Fullscreen for map 2 stuff
-			var elem = document.getElementById("fullscreen2");
-			var open = document.getElementById("open2");
-			var close = document.getElementById("close2");
-			function openFullscreen2() {
-				var map = document.getElementById("map2");
-				map.style.width = '100%';
-				map.style.height = '725px';
-				map.style.margin = 'auto';
-				var input = document.getElementById("inputbox2");
-				input.style.margin = '50px';
-				if (elem.requestFullscreen) {
-					elem.requestFullscreen();
-				}
-				else if (elem.webkitRequestFullscreen) {
-					elem.webkitRequestFullscreen();
-				}
-				open.style.visibility = 'hidden';
-				close.style.visibility = 'visible';
-				close.style.float = 'left';
-			}
-			function closeFullscreen2() {
-				var map = document.getElementById("map2");
-				map.style.width = '100%';
-				map.style.height = '540px';
-				var input = document.getElementById("inputbox2");
+				var input = document.getElementById("inputbox" + mapToFull);
 				input.style.margin = '0px';
 				if (document.exitFullscreen) {
 					document.exitFullscreen();
