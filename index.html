@@ -411,12 +411,26 @@
 				var locationLon;
 				var markerGroup1 = L.layerGroup().addTo(mymap);
 				var markerGroup2 = L.layerGroup().addTo(mymap2);
+				var holdResults = "";
 				//if the first map has to be updated
 				if (mapMoved == 1 || inputbox1.filter != "none") {
 					for (var i = 0; i < data.results.length; i++) {
 						locationLat = data.results[i].coordinates.latitude;//get lattitude of location[i]
 						locationLon = data.results[i].coordinates.longitude;//get longitude of location[i]
 						var marker = L.marker(new L.LatLng(locationLat, locationLon)).addTo(markerGroup1);
+						if(data.results[i].measurements.length>2)//popup for the data measurements
+						{
+							for(var j=0; j<data.results[i].measurements.length;j++) {
+								holdResults = holdResults + data.results[i].measurements[j].value;
+								if(j>0 && j<data.results[i].measurements.length-1) {
+									holdResults = holdResults + ",";
+								}
+							}
+						}
+						else {
+							holdResults = data.results[i].measurements[i].value;
+						}
+						marker.bindPopup("Measurement Average = " + holdResults).openPopup();
 						marker;
 					}//results1 loop
 				}
@@ -427,6 +441,19 @@
 						locationLat = data.results[i].coordinates.latitude;//get lattitude of location[i]
 						locationLon = data.results[i].coordinates.longitude;//get longitude of location[i]
 						var marker = L.marker(new L.LatLng(locationLat, locationLon)).addTo(mymap2);
+						if(data.results[i].measurements.length>2)//popup for data measurements
+						{
+							for(var j=0; j<data.results[i].measurements.length;j++) {
+								holdResults = holdResults + data.results[i].measurements[j].value;
+								if(j>0 && j<data.results[i].measurements.length-1) {
+									holdResults = holdResults + ",";
+								}
+							}
+						}
+						else {
+							holdResults = data.results[i].measurements[i].value;
+						}
+						marker.bindPopup("Measurement Average = " + holdResults).openPopup();
 						marker;
 					}//results2 loop
 				}
