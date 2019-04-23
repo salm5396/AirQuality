@@ -304,7 +304,7 @@
 				getAirData2();
 			});
 
-			//Function to fetche the air data for map 1 with radius calculated
+			//Function to fetch the air data for map 1 with radius calculated
 			function getAirData() {
 				var latitude = inputbox1.latitude;
 				var longitude = inputbox1.longitude;
@@ -330,7 +330,7 @@
 			}
 
 
-			//Function to fetche the air data for the second map within the radius calculated
+			//Function to fetch the air data for the second map within the radius calculated
 			function getAirData2() {
 				var latitude = inputbox2.latitude;
 				var longitude = inputbox2.longitude;
@@ -401,8 +401,8 @@
 			// handle data and calls the populate function to fill tables
 			function handleData(airdata) {
 				var data = JSON.parse(airdata);
-				locations(data);
 				populateTable(data);
+				locations(data);
 			}
 
 			//function handles the locations that are retrieved from getLocations
@@ -418,42 +418,42 @@
 						locationLat = data.results[i].coordinates.latitude;//get lattitude of location[i]
 						locationLon = data.results[i].coordinates.longitude;//get longitude of location[i]
 						var marker = L.marker(new L.LatLng(locationLat, locationLon)).addTo(markerGroup1);
-						if(data.results[i].measurements.length>2)//popup for the data measurements
+						if (data.results[i].measurements.length >= 2)//popup for the data measurements
 						{
-							for(var j=0; j<data.results[i].measurements.length;j++) {
-								holdResults = holdResults + data.results[i].measurements[j].value;
-								if(j>0 && j<data.results[i].measurements.length-1) {
+							for (var j = 0; j < data.results[i].measurements.length; j++) {
+								holdResults = holdResults + data.results[i].measurements[j].parameter + ":" + data.results[i].measurements[j].value + data.results[i].measurements[j].unit + " ";
+								if (j > 0 && j < data.results[i].measurements.length - 1) {
 									holdResults = holdResults + ",";
 								}
 							}
 						}
 						else {
-							holdResults = data.results[i].measurements[i].value;
+							holdResults = data.results[i].measurements[i].parameter + ":" + data.results[i].measurements[i].value + data.results[i].measurements[i].unit;
 						}
-						marker.bindPopup("Measurement Average = " + holdResults).openPopup();
+						marker.bindPopup("Measurement Average = " + holdResults);
 						marker;
 					}//results1 loop
 				}
 
 				//if the second map has to be updated
-				if (mapMoved == 2) {
+				if (mapMoved == 2 || inputbox2.filter != "none") {
 					for (var i = 0; i < data.results.length; i++) {
 						locationLat = data.results[i].coordinates.latitude;//get lattitude of location[i]
 						locationLon = data.results[i].coordinates.longitude;//get longitude of location[i]
-						var marker = L.marker(new L.LatLng(locationLat, locationLon)).addTo(mymap2);
-						if(data.results[i].measurements.length>2)//popup for data measurements
+						var marker = L.marker(new L.LatLng(locationLat, locationLon)).addTo(markerGroup2);
+						if (data.results[i].measurements.length >= 2)//popup for the data measurements
 						{
-							for(var j=0; j<data.results[i].measurements.length;j++) {
-								holdResults = holdResults + data.results[i].measurements[j].value;
-								if(j>0 && j<data.results[i].measurements.length-1) {
+							for (var j = 0; j < data.results[i].measurements.length; j++) {
+								holdResults = holdResults + data.results[i].measurements[j].parameter + ":" + data.results[i].measurements[j].value + data.results[i].measurements[j].unit +" ";
+								if (j > 0 && j < data.results[i].measurements.length - 1) {
 									holdResults = holdResults + ",";
 								}
 							}
 						}
 						else {
-							holdResults = data.results[i].measurements[i].value;
+							holdResults = data.results[i].measurements[i].parameter + ":" + data.results[i].measurements[i].value + data.results[i].measurements[i].unit;
 						}
-						marker.bindPopup("Measurement Average = " + holdResults).openPopup();
+						marker.bindPopup("Measurement Average = " + holdResults);
 						marker;
 					}//results2 loop
 				}
@@ -500,7 +500,6 @@
 				open.style.visibility = 'visible';
 				close.style.visibility = 'hidden';
 				open.style.float = 'left';
-				populateTable()
 			}
 
 
