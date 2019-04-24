@@ -8,6 +8,21 @@
     margin-right: auto;
     width: 50%;
 }
+.right
+{
+    float: right;
+    padding-left:5px;
+    width: 60%;
+    display: block;
+}
+
+.column 
+{
+	float: left;
+	width: 33.33%;
+	padding: 9px;
+}
+
 .img
 {
     width:.5rem
