@@ -426,7 +426,7 @@
 					var radius = distance;
 					var url = "https://api.openaq.org/v1/latest?coordinates=" + latitude + "," + longitude + "&radius=" + radius + "&limit=10000" + "&date_from"+datefrom;
 
-					if (inputbox1.filter != "none") {
+					if (inputbox2.filter != "none") {
 						console.log("filtering")
 						url = url + "&parameter=" + inputbox2.filter + "";
 					}
