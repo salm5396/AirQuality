@@ -160,7 +160,7 @@
 			var mapMoved;
 
 			//creating the first map with a default location of US Bank
-			var mymap = L.map('map1').setView([44.94243628773274, -93.19061520597946], 16);
+			var mymap = L.map('map1').setView([44.9738, -93.2578], 16);
 			L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 				attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 				minZoom: 9,
@@ -169,7 +169,7 @@
 				accessToken: 'pk.eyJ1IjoiYmxhczE2NjMiLCJhIjoiY2pubnBpb3k2MHY1dzNrbnhlZDg2dDh3bCJ9.zVKhV-UYABeLItMitLFrjw',
 			}).addTo(mymap);
 
-			var mymap2 = L.map('map2').setView([44.94243628773274, -93.19061520597946], 16);
+			var mymap2 = L.map('map2').setView([44.9738, -93.2578], 16);
 			L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
 				attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 				minZoom: 9,
@@ -183,8 +183,8 @@
 			var inputbox1 = new Vue({
 				el: '#inputbox1',
 				data: {
-					latitude: '44.973572561901726',
-					longitude: '-93.25746774673463',
+					latitude: '44.9738',
+					longitude: '-93.2578',
 					location: 'US Bank Stadium',
 					latlng: true,
 					filter: 'none'
@@ -226,8 +226,8 @@
 			var inputbox2 = new Vue({
 				el: '#inputbox2',
 				data: {
-					latitude: '44.973572561901726',
-					longitude: '-93.25746774673463',
+					latitude: '44.9738',
+					longitude: '-93.2578',
 					location: 'US Bank Stadium',
 					latlng: true,
 					filter: 'none'
@@ -314,7 +314,7 @@
 				var radius = distance;
 				var datefrom = "2019-03-27";
 
-				var url = "https://api.openaq.org/v1/measurements?coordinates=" + latitude + "," + longitude + "&radius=" + radius + datefrom + "&limit=10000";
+				var url = "https://api.openaq.org/v1/measurements?coordinates=" + latitude + "," + longitude + "&radius=" + radius +"&date_from" + datefrom + "&limit=10000";
 
 				if (inputbox1.filter != "none") {
 					console.log("filtering")
@@ -409,7 +409,7 @@
 					var distance2 = new L.LatLng(latitude, mymap1.getBounds().getWest());
 					var distance = mymap1.distance(distance1, distance2);
 					var radius = distance;
-					var url = "https://api.openaq.org/v1/latest?coordinates=" + latitude + "," + longitude + "&radius=" + radius + "&limit=10000" + datefrom;
+					var url = "https://api.openaq.org/v1/latest?coordinates=" + latitude + "," + longitude + "&radius=" + radius + "&limit=10000" + "&date_from"+datefrom;
 
 					if (inputbox1.filter != "none") {
 						console.log("filtering")
@@ -424,7 +424,7 @@
 					var distance2 = new L.LatLng(latitude, mymap2.getBounds().getWest());
 					var distance = mymap2.distance(distance1, distance2);
 					var radius = distance;
-					var url = "https://api.openaq.org/v1/latest?coordinates=" + latitude + "," + longitude + "&radius=" + radius + "&limit=10000" + datefrom;
+					var url = "https://api.openaq.org/v1/latest?coordinates=" + latitude + "," + longitude + "&radius=" + radius + "&limit=10000" + "&date_from"+datefrom;
 
 					if (inputbox1.filter != "none") {
 						console.log("filtering")
@@ -465,7 +465,7 @@
 							for (var j = 0; j < data.results[i].measurements.length; j++) {
 								holdResults = holdResults + data.results[i].measurements[j].parameter + ":" + data.results[i].measurements[j].value + data.results[i].measurements[j].unit + " ";
 								if (j > 0 && j < data.results[i].measurements.length - 1) {
-									holdResults = holdResults + ",";
+									holdResults = holdResults + ", ";
 								}
 							}
 						}
