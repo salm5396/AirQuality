@@ -406,8 +406,8 @@
 					var latitude = inputbox1.latitude;
 					var longitude = inputbox1.longitude;
 					var distance1 = new L.LatLng(latitude, longitude);
-					var distance2 = new L.LatLng(latitude, mymap1.getBounds().getWest());
-					var distance = mymap1.distance(distance1, distance2);
+					var distance2 = new L.LatLng(latitude, mymap.getBounds().getWest());
+					var distance = mymap.distance(distance1, distance2);
 					var radius = distance;
 					var url = "https://api.openaq.org/v1/latest?coordinates=" + latitude + "," + longitude + "&radius=" + radius + "&limit=10000" + "&date_from"+datefrom;
 
@@ -678,7 +678,6 @@
 				}//pm10
 				return null;
 			}
-			
 		</script>
 	</body>
 </html>
