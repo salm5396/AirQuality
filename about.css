@@ -38,22 +38,18 @@ h3
     top: 100px;
 }
 
-.description
-{
-	float: right;
-	width: 50%;
-	position: relative;
-	display: inline-block;
-	width: 60%;
-}
-
 .tools
 {
-	width: 10%;
-	top: 80px;
-	display: inline-block;
-	position:relative;
-	padding:80px;
+    width: 10%;
+    top: 80px;
+    display: inline-block;
+    position:relative;
+    padding:80px;
+}
+
+.img
+{
+    width:.5rem
 }
 
 #div1, #div2{
@@ -70,11 +66,6 @@ h3
     position:relative;
 }
 
-
-.img
-{
-    width:.5rem
-}
 /* navigation panel */
 #navigation {
     width: 100%;
