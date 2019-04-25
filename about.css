@@ -1,6 +1,12 @@
 ﻿body
 {
 }
+
+h3
+{
+	text-align: center;
+}
+
 .center 
 {
     display: block;
@@ -18,10 +24,52 @@
 
 .column 
 {
-	float: left;
-	width: 33.33%;
-	padding: 9px;
+    float: left;
+    width: 33.33%;
+    padding: 9px;
 }
+
+.text
+{
+    display:inline-block;
+    left: -95px;
+    width: 50%;
+    position: relative;
+    top: 100px;
+}
+
+.description
+{
+	float: right;
+	width: 50%;
+	position: relative;
+	display: inline-block;
+	width: 60%;
+}
+
+.tools
+{
+	width: 10%;
+	top: 80px;
+	display: inline-block;
+	position:relative;
+	padding:80px;
+}
+
+#div1, #div2{
+    display: inline-block;
+}
+
+#p1, #p2, #p3, #p4{
+    font-family: monospace; font-style: "Courier New";
+    display:block;
+    float:left;
+    padding: 75px;
+    width:200px;
+    padding-left:5px;
+    position:relative;
+}
+
 
 .img
 {
